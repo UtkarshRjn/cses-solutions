@@ -1,30 +1,36 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 typedef long long ll;
 
-void permutation(ll* a,ll l, ll r, set<ll> &arr, ll SUM, ll n){
-    if(l==r){
-        ll sum = 0;
-        for(ll i=0;i<n;i++){
-            sum += a[i];
-            arr.insert(abs(2*sum-SUM));
-        }
-    }
-    for(int i=l;i<=r;i++){
-        swap(a[i],a[l]);
-        permutation(a,l+1,r,arr,SUM,n);
-        swap(a[i],a[l]);
-    }
+void combination(vector<ll> arr, vector<ll> r, ll minimum, ll SUM, ll i, ll sum){
+
+	for(auto itr : r) cout << itr << " ";
+	cout << endl;
+
+	if(abs(SUM-2*sum) > minimum) return;
+	minimum = min(minimum,abs(SUM-2*sum));
+
+	while(i < arr.size()){
+
+		r.push_back(arr[i]);
+		combination(arr, r, minimum, SUM, i, sum + arr[i]);
+		i++;
+		r.pop_back();
+	}
 }
 
-int main(){
-    
-    ll n;cin >> n;
-    ll s[n],SUM = 0,mn = 1e17;
-    set<ll> arr;
-    for(ll i=0;i<n;SUM+=s[i],i++) cin >> s[i];
-    permutation(s,0,n-1,arr,SUM,n);
-    for(auto itr : arr) mn = min(itr,mn);
-    cout << mn << endl;
+int main()
+{
+	ll n,min = INT_MAX,sum = 0;cin >> n;
+	vector<ll> arr,r;
+	for(ll i=0;i<n;i++){
+		ll x;cin >> x;
+		sum += x;
+		arr.push_back(x);
+	}
+	combination(arr,r,min,sum,0,0);
+	cout << min << endl;
+
+	return 0;
 }

@@ -38,16 +38,34 @@ ll binarySearch(ll arr[], ll l, ll r, ll x)
   return -1;
 }
 
-int main(){
-	ll n,x;cin >> n >> x;
-	vector<ll> v(n);
-	for(ll i=0;i < n;i++) cin >> v[i];
-	sort(v.begin(),v.end(),greater<ll>());
-	ll ans = 0;
-	for(ll i=0;i<n;i++){
-		ans += x/v[i];
-		x = x%v[i];
-		if(x==0) break;
+ll minCoins(vector<ll> S, ll m, ll V){
+
+	ll table[V+1];
+
+	table[0] = 0;
+
+	for(ll i=1;i<=V;i++)
+		table[i] = INT_MAX;
+
+	for(ll i=1; i<=V;i++){
+		for(ll j=0;j<m;j++)
+			if(S[j]<=i){
+				ll sub_res = table[i-S[j]];
+				if( sub_res != INT_MAX && sub_res + 1 < table[i])
+					table[i] = sub_res + 1;
+			}
 	}
-	cout << ans << endl;
+	if(table[V]==INT_MAX)
+		return -1;
+	return table[V];
+
+}
+
+
+int main(){
+	ll m,n;cin >> m >> n;
+	vector<ll> S(m);
+	for(ll i=0;i<m;i++) cin >> S[i];
+
+	cout << minCoins(S, m, n) << endl;
 }

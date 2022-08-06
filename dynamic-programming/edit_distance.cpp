@@ -46,26 +46,33 @@ bool lexo_dec(string a, string b){
 const ll fac = 1e9 + 6;
 
 int main(){
-	ll n;cin >> n;
-	std::vector<ll> v(n+1);
-
-	v[0] = 0;
-	for(int i=1;i<=9 && i<=n;i++){
-		v[i] = 1;
-	}
-
-	for(int i=10;i<=n;i++){
-		ll  Min = INT_MAX;
-		int x = i;
-		while(x){
-			int l = x%10;
-			if(l != 0 ) 
-				Min = min(Min,v[i-l] + 1);
-			x = x/10;
-		}
-		v[i] = Min;
-	}
-
-	cout << v[n] << endl;
+	
+	string A,B; cin >> A >> B;
+	int n = A.length();
+    int m = B.length();
+    
+    vector<vector<int>> dp(n+1, vector<int>(m+1));
+    
+   
+    
+    for(int i=0;i<=n;i++){
+        for(int j=0;j<=m;j++){
+            if(i==0) 
+            {
+                dp[i][j] = j;
+            }else if(j == 0)
+            {
+                dp[i][j] = i;
+            }else if(A[i-1] == B[j-1])
+            {
+                dp[i][j] = dp[i-1][j-1];
+            }else
+            {
+                dp[i][j] = 1+min(dp[i-1][j], min(dp[i][j-1], dp[i-1][j-1]));
+            }
+        }
+    }
+    
+    cout << dp[n][m] << endl;
 
 }

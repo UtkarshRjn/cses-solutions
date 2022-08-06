@@ -43,29 +43,31 @@ bool lexo_dec(string a, string b){
 	return a > b;
 }
 
-const ll fac = 1e9 + 6;
+const ll fac = 1e9 + 7;
 
 int main(){
-	ll n;cin >> n;
-	std::vector<ll> v(n+1);
+	
+	ll n; cin >> n;
+    vector<int> v(n);
 
-	v[0] = 0;
-	for(int i=1;i<=9 && i<=n;i++){
-		v[i] = 1;
-	}
+    ll sum = 0;
+    for(int& x: v){
+        cin >> x;
+        sum += x;
+    }
 
-	for(int i=10;i<=n;i++){
-		ll  Min = INT_MAX;
-		int x = i;
-		while(x){
-			int l = x%10;
-			if(l != 0 ) 
-				Min = min(Min,v[i-l] + 1);
-			x = x/10;
-		}
-		v[i] = Min;
-	}
+    // cout << sum << endl;
+    vector<vector<ll>> dp(n+1,vector<ll> (n+1));
 
-	cout << v[n] << endl;
+    for(ll i=n;i>=1;i--){
+        for(ll j=i;j<=n;j++){
+            if(i==j) dp[i][i] = v[i-1];
+            else{
+                dp[i][j] = max(v[j-1] - dp[i][j-1], v[i-1] - dp[i+1][j]);
+            }
+        }
+    }
+
+    cout << (sum+dp[1][n])/2 << endl;
 
 }

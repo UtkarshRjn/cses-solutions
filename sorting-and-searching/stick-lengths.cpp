@@ -39,7 +39,7 @@ void solve(){
         cnt++;
     }
 
-    ll min_cost = INT_MAX;
+    ll min_cost = LLONG_MAX;
     for(ll i=0;i<sticks.size();i++){
         min_cost = min(min_cost,cost_from_adding[i] + cost_from_deleting[sticks.size()-i-1]);
     }

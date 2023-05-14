@@ -9,25 +9,26 @@ const double pi = acos( -1 );
 const int inf = 0x3f3f3f3f;
  
 ll n, x;
-vector<pair<ll,ll>> at;
-multiset<ll> myml;
- 
+vector<ll> v;
+
 void solve(){
 	
     cin >> n;
-    while(n--){
-        cin >> x;
-        if(myml.upper_bound(x) != myml.end()){
-            myml.erase(myml.upper_bound(x));
-            myml.insert(x);
-        }else{
-            myml.insert(x);
-        }
+    for(int i=1;i<=n;i++){
+        v.push_back(i);
     }
- 
-    cout << myml.size() << endl;
+
+    int index = 0;
+    while(v.size() != 1){
+        index = (index+1) % v.size();
+        cout << v[index] << " ";
+        v.erase(v.begin() + index);
+    }
+
+    cout << v[0] << endl;    
+
 }
- 
+
 int main(){
 	
 	ios::sync_with_stdio(0);

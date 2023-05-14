@@ -1,11 +1,27 @@
 #include <iostream>
-// #include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
-
+ 
+typedef long long ll;
+const int N = 2e5+1;
+const double eps = 1e-9;
+const double pi = acos( -1 );
+const int inf = 0x3f3f3f3f;
+ 
 int main(){
-
-    int n; cin >> n;
-    for(int i=0;i<n;i++){
-        cout << (i*i-4)*(i-1)*2 + (i*i-6)*(i-2)*2 + 2*(i*i-2) + (i*i-3)*4 + ((i*i-8)*(i-4)*(i-4))/2 << endl;
+ 
+    ll n; cin >> n;
+    
+    for(ll i=1;i<=n;i++){
+        
+        ll ans = 0;
+        ans += (i*i-2)*4;
+        ans += (i*i-3)*8;
+        ans += (i*i-4)*(4*(i-4)+4);
+        ans += (i*i-6)*(4*(i-4));
+        ans += (i*i-8)*((i-4)*(i-4));
+        ans -= i*i;
+        cout << ans/2 << endl;
+ 
     }
 }

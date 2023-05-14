@@ -1,36 +1,34 @@
+#include <iostream>
 #include <bits/stdc++.h>
 using namespace std;
 
 typedef long long ll;
+const int N = 2e5+1;
+const double eps = 1e-9;
+const double pi = acos( -1 );
+const int inf = 0x3f3f3f3f;
 
-void combination(vector<ll> arr, vector<ll> r, ll minimum, ll SUM, ll i, ll sum){
+int main(){
 
-	for(auto itr : r) cout << itr << " ";
-	cout << endl;
+    ll n; cin >> n;
+    
+    vector<ll> v;
+    ll sum = 0;
+    for(ll i=0;i<n;i++){
+        ll p; cin >> p;
+        v.push_back(p);
+        sum += p;
+    }
 
-	if(abs(SUM-2*sum) > minimum) return;
-	minimum = min(minimum,abs(SUM-2*sum));
-
-	while(i < arr.size()){
-
-		r.push_back(arr[i]);
-		combination(arr, r, minimum, SUM, i, sum + arr[i]);
-		i++;
-		r.pop_back();
+	ll ans = INT_MAX;
+	for(ll i = 0; i < 1<<n; i++) {
+		ll s = 0;
+		for(ll j = 0; j < n; j++) {
+			if(i & 1<<j) s += v[j];
+		}
+		ll curr = abs((sum-s)-s);
+		ans = min(ans, curr);
 	}
-}
+	cout << ans;
 
-int main()
-{
-	ll n,min = INT_MAX,sum = 0;cin >> n;
-	vector<ll> arr,r;
-	for(ll i=0;i<n;i++){
-		ll x;cin >> x;
-		sum += x;
-		arr.push_back(x);
-	}
-	combination(arr,r,min,sum,0,0);
-	cout << min << endl;
-
-	return 0;
 }

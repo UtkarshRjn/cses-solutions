@@ -80,7 +80,7 @@ void solve(){
 	bool reached = false;
 	string final_route;
 	while(!q.empty() && !reached){
-		pair<pair<int, int>,string> p = q.front();
+		auto p = q.front();
 		q.pop();
 
 		for(auto me:move){

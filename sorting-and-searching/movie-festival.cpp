@@ -1,45 +1,31 @@
-#include <bits/stdc++.h>
+#include <bits/stdtr1c++.h>
+#include <ext/pb_ds/assoc_container.hpp> 
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds; 
+typedef long long ll;
+
+#define ordered_set tree<ll, null_type,less_equal<ll>, rb_tree_tag,tree_order_statistics_node_update>
+
+#define ordered_set_rev tree<ll, null_type, greater_equal<ll>, rb_tree_tag, tree_order_statistics_node_update>
 
 using namespace std;
 
-typedef long long ll;
-const int N = 2e6+10;
-const double eps = 1e-9;
-const double pi = acos( -1 );
-const int inf = 0x3f3f3f3f;
+void solve() {
 
-ll n, a, b;
-vector<pair<ll,ll>> v;
+    ll n, k; cin >> n >> k;
+    vector<pair<ll,pair<ll,ll>>> v;
 
-void solve(){
-	
-    cin >> n;
-    while(n--){
-        cin >> a >> b;
-        v.push_back({b,a});
+    for(int i=0;i<n;i++){
+        ll a,b; cin >> a >> b;
+        v.push_back({i+1, {a,b}});
     }
-
-    sort(v.begin(), v.end());
-
-    ll curr = v[0].first;
-    ll cnt = 1;
-    for(ll i=1;i<v.size();i++){
-        if(v[i].second>=curr){
-            // take this
-            curr=v[i].first;
-            cnt++;
-        }
-    }
-
-    cout << cnt << endl;
 
 }
 
-int main(){
-	
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	solve();
-	return 0;
-
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    solve();
+    return 0;
 }

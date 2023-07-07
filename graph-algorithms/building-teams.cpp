@@ -52,6 +52,8 @@ bool isP(int ni, int nj, ll n ,ll m){
 
 void solve(){
 	
+
+    // Do dfs and color odd even, if odd cycle found say IMPOSSIBLE
 	ll n,m;
     cin >> n >> m;
     vector<vector<ll>> adj(n);

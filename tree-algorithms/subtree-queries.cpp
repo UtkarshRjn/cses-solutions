@@ -47,8 +47,12 @@ bool lexo_dec(string a, string b){
  
 int n;
 vector<int> adj[SZ];
-int size[SZ];
+int size_orig[SZ];
+int value_orig[SZ];
+int SubTreeLen[SZ];
 int value[SZ];
+int idx[SZ];
+int fenwick_tree[SZ];
 
 void dfs(int u, int p) {
 	
@@ -56,18 +60,48 @@ void dfs(int u, int p) {
     for(auto x: adj[u]){
         if(x == p) continue;
         dfs(x, u);
-        count += size[x];
+        count += size_orig[x];
     }
-    size[u] = count + 1;
+    size_orig[u] = count + 1;
  
 }
- 
+
+
 int query(int s){
 
+    // query fenwick from [idx[s] , idx[s] + size[idx[s]])
+    int i = idx[s];
+    int sum = 0;
+    for(;i>0;i-=i&-i){
+        sum += fenwick_tree[i];
+    }
+
+    return sum; 
+
 }
 
-int update(int a, int b){
-    
+void update(int s, int x){
+    int delta = x - value[idx[s]]; 
+    value[idx[s]] = x;
+
+    int i = idx[s];
+    for(;i<=n;i+=i&-i){
+        fenwick_tree[i] += delta;
+    }
+    // update fenwick at index idx[s] to x
+}
+
+void dfs2(int u, int p, int i){
+
+    idx[u] = i;
+    value[i] = value_orig[u];
+    update(u,value[i]);
+    SubTreeLen[i] = size_orig[u];
+    for(auto x: adj[u]){
+        if(x == p) continue;
+        dfs(x,u);
+    }
+
 }
 
 void solve() {
@@ -76,7 +110,7 @@ void solve() {
 	
     for(int i=1;i<=n;i++){
         int v; cin >> v;
-        value[i] = v;
+        value_orig[i] = v;
     }
     
     for (int i = 0; i < n-1; i++) {
@@ -84,6 +118,8 @@ void solve() {
 		adj[a].push_back(b);
 		adj[b].push_back(a);
 	}
+
+    dfs2(1,0,0);
 	
     // Point update of value and range query 
     // 1 s x -> is a point update which just update the value

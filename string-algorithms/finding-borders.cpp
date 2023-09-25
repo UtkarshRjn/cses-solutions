@@ -32,33 +32,24 @@ vector<ll> preprocess(string p){
 
 int main(){
 
-    string s,p; cin >> s >> p;
+    string p; cin >> p;
 
-    ll n = s.size();
+    ll n = p.size();
     vector<ll> lps = preprocess(p);
 
-    ll ps = p.size();
-    ll i = 0, j = 0;
+    vector<ll> ans;
+    ll j = n - 1;
+    while(lps[j]){
 
-    ll count = 0;
-    while(i < n){
-        if(s[i] == p[j]){
-            i++;
-            j++;
-            if(j == ps) {
-                count++;
-                j = lps[j-1];
-            }
-        }else{
-            if(j > 0){
-                j = lps[j-1];   
-            }else{
-                i++;
-            }
-        }
-    }   
+        ans.push_back(lps[j]);
+        j = lps[j] - 1;
 
-    cout << count << endl;
+    }
 
+    sort(ans.begin(), ans.end());
+    for(auto e: ans){
+        cout << e << " ";
+    }
+    cout << endl;
 
 }

@@ -46,23 +46,20 @@ bool lexo_dec(string a, string b){
 
 #define SZ 200005
 
-ll sigma(ll n){
-
-    ll sum = n * (n+1) /2;
-    ll ans = 0;
-    for(int i=1;i<=sqrt(n);i++){
-        ans = (ans%mod + (((n/i)%mod * i%mod)%mod + ((sum/i)%mod - i%mod)%mod)%mod)%mod;
-        cout << ans << endl;
-    }
-
-    return ans;
-
-}
 
 void solve() {
 
-    ll n; cin >> n;
-    cout << sigma(n) << endl;
+    ll n,q; cin >> n >> q;
+    vector<ll> v(n+1,0);
+    for(int i =1;i<n+1;i++) {
+        ll x; cin >> x;
+        v[i] = v[i-1] + x;
+    }
+
+    while(q--){
+        ll a,b; cin >> a >> b;
+        cout << v[b] - v[a-1] << endl;
+    }
 
 }
 

@@ -43,44 +43,38 @@ bool lexo_inc(string a, string b) {
 bool lexo_dec(string a, string b){
 	return a > b;
 }
+ 
+#define SZ 1000005
 
-#define SZ 200005
-
-const int MOD = 1e9 + 7;
-const int TWO_MOD_INV = 500000004;
-
-long long total_sum(long long start, long long end) {
-	return ((((end - start + 1) % MOD) * ((start + end) % MOD) % MOD) *
-	        TWO_MOD_INV % MOD);
-}
-
-ll sigma(ll n){
-
-    long long total = 0;
-	long long at = 1;
-	while (at <= n) {
-		long long add_amt = n / at;  // Our divisor to process
-		// The largest number that still has the same value of q
-		long long last_same = n / add_amt;
-
-		total = (total + add_amt * total_sum(at, last_same)) % MOD;
-		at = last_same + 1;
-	}
-
-	return total;
-
-}
+vector<int> freq(SZ);
 
 void solve() {
 
     ll n; cin >> n;
-    cout << sigma(n) << endl;
+
+    while(n--){
+        ll x; cin >> x;
+        freq[x]++;
+    }
+
+    for(ll gcd=SZ;gcd>=1;gcd--){
+        ll div = 0;
+        for(ll j=gcd;j<=SZ;j+=gcd){
+            div += freq[j];
+        }
+        if(div >= 2){
+            cout << gcd << endl;
+            return;
+        }
+    }
 
 }
 
 int main(){
+
 	int T;
     T = 1;
+    // cin >> T;
 	while(T--){
 		solve();
 	}

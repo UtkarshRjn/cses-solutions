@@ -45,36 +45,43 @@ bool lexo_dec(string a, string b){
 }
 
 #define SZ 200005
+const ll MOD = 1e9 + 7;
 
-const int MOD = 1e9 + 7;
-const int TWO_MOD_INV = 500000004;
+ll powm(ll p, ll a, ll mod){
 
-long long total_sum(long long start, long long end) {
-	return ((((end - start + 1) % MOD) * ((start + end) % MOD) % MOD) *
-	        TWO_MOD_INV % MOD);
-}
-
-ll sigma(ll n){
-
-    long long total = 0;
-	long long at = 1;
-	while (at <= n) {
-		long long add_amt = n / at;  // Our divisor to process
-		// The largest number that still has the same value of q
-		long long last_same = n / add_amt;
-
-		total = (total + add_amt * total_sum(at, last_same)) % MOD;
-		at = last_same + 1;
+	// use the binary exponentiation
+	ll ans = 1;
+	while(a){
+		ll r = a%2;
+		a/=2;
+		if(r) ans = (ans * p%mod)%mod;
+		p = (p%mod*p%mod)%mod;
 	}
 
-	return total;
+	return ans%mod;
 
+}
+
+ll invmod(ll a, ll mod){
+	return powm(a,mod-2,mod)%mod;
 }
 
 void solve() {
 
     ll n; cin >> n;
-    cout << sigma(n) << endl;
+    ll num_div = 1;
+	ll sum_div = 1;
+	ll prod_div = 1;
+	ll num_divc = 1;
+	while(n--){
+		ll p,a;cin >> p >> a;
+		num_div = num_div * (a+1) %MOD;
+		sum_div = sum_div * (powm(p,a+1,MOD) - 1) % MOD * invmod(p-1,MOD) % MOD;
+		prod_div =  powm(prod_div,a+1,MOD) * powm(powm(p,(a*(a+1)/2),MOD),num_divc,MOD) % MOD;
+		num_divc = num_divc * (a+1) %(MOD-1);
+	}
+
+	cout << num_div << " " << sum_div << " " << prod_div << endl;
 
 }
 

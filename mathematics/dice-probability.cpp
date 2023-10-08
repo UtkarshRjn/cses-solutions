@@ -47,54 +47,32 @@ bool lexo_dec(string a, string b){
 #define SZ 1000005
 const ll MOD = 1e9 + 7;
 
-ll powm(ll p, ll n){
-
-    ll ans = 1;
-    while(n){
-        ll r = n%2;
-        n/=2;
-        if(r) ans = ans * p % MOD;
-        p = p * p % MOD;
-    }
-
-    return ans;
-
-}
-
-ll inv(ll n){
-    return powm(n,MOD-2);
-}
-
-ll spf[SZ]; 
-
-void Sieve(){
-
-    memset(spf, -1, sizeof(spf));
-    for(int i=2;i<SZ;i+=2) spf[i] = 2;
-
-    for(int i=3;i<SZ;i+=2){
-        if(spf[i] == -1){
-            for(int j=i;j<SZ;j+=i){
-                spf[j] = i;
-            }
-        }
-    }
-
-}
+typedef long double ld;
 
 void solve() {
 
-    ll n,m; cin >> n >> m;
+    ll n,a,b; cin >> n >> a >> b;
 
-    ll ans = 0;    
-    for(ll i=0;i<n;i++){
-        ans += powm(m,__gcd(i,n));
-        ans %= MOD;
+    vector<ld> dp(601, 0);
+
+    dp[0] = 1.0;
+    for(int thrw = 1; thrw<=n;thrw++){
+        vector<ld> dpN(601, 0);
+        for(int i=1;i<=6*thrw;i++){
+            for(int j=i-1;j>=i-6 & j >= 0;j--){
+                dpN[i] += dp[j];
+            }
+            dpN[i] /= 6;
+        }
+        dp = dpN;
     }
 
-    ans = ans * inv(n) % MOD;
+    ld ans = 0;
+    for(int i=a;i<=b;i++){
+        ans += dp[i];
+    }
 
-    cout << ans << endl;
+    cout << fixed << setprecision(6) <<  ans << endl;
 
 }
 
@@ -102,7 +80,7 @@ int main(){
 
 	int T;
     T = 1;
-    Sieve();
+    // cin >> T;
 	while(T--){
 		solve();
 	}

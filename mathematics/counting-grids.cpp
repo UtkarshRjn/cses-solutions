@@ -84,17 +84,15 @@ void Sieve(){
 
 void solve() {
 
-    ll n,m; cin >> n >> m;
+    ll n; cin >> n;
 
-    ll ans = 0;    
-    for(ll i=0;i<n;i++){
-        ans += powm(m,__gcd(i,n));
-        ans %= MOD;
-    }
+    ll ans = 0;
+    ll r = n%2;
+    ans = (ans + powm(2,n*n)) % MOD;
+    ans = (ans + powm(2,n*n/4 + 1 + r)) % MOD;
+    ans = (ans + powm(2,n*n/2 + r)) % MOD;
 
-    ans = ans * inv(n) % MOD;
-
-    cout << ans << endl;
+    cout << (ans * inv(4) % MOD) << endl;
 
 }
 

@@ -47,54 +47,37 @@ bool lexo_dec(string a, string b){
 #define SZ 1000005
 const ll MOD = 1e9 + 7;
 
-ll powm(ll p, ll n){
+unordered_map<ll,ll> F;
 
-    ll ans = 1;
-    while(n){
-        ll r = n%2;
-        n/=2;
-        if(r) ans = ans * p % MOD;
-        p = p * p % MOD;
-    }
+ll f(ll n){
 
-    return ans;
 
-}
+    if(F[n]) return F[n];
 
-ll inv(ll n){
-    return powm(n,MOD-2);
-}
+    if(n == 1) return F[1] = 1;
+    if(n == 0) return F[0] = 1;
 
-ll spf[SZ]; 
+    if(n%2 == 0){
+        ll f1 = f(n/2);
+        ll f2 = f(n/2 - 1);
 
-void Sieve(){
+        return F[n] = (f1 * f1 % MOD + f2 * f2 % MOD) % MOD;
 
-    memset(spf, -1, sizeof(spf));
-    for(int i=2;i<SZ;i+=2) spf[i] = 2;
+    }else{
+        ll f1 = f(n/2); 
+        ll f2 = f(n/2 - 1); 
+        ll f3 = f(n/2 + 1); 
 
-    for(int i=3;i<SZ;i+=2){
-        if(spf[i] == -1){
-            for(int j=i;j<SZ;j+=i){
-                spf[j] = i;
-            }
-        }
+        return F[n] = (f1 * f2 % MOD + f3 * f1 % MOD) % MOD;
     }
 
 }
 
 void solve() {
 
-    ll n,m; cin >> n >> m;
+    ll n; cin >> n;
 
-    ll ans = 0;    
-    for(ll i=0;i<n;i++){
-        ans += powm(m,__gcd(i,n));
-        ans %= MOD;
-    }
-
-    ans = ans * inv(n) % MOD;
-
-    cout << ans << endl;
+    cout << ((n == 0) ? 0 : f(n-1)) << endl;    
 
 }
 
@@ -102,7 +85,7 @@ int main(){
 
 	int T;
     T = 1;
-    Sieve();
+    // cin >> T;
 	while(T--){
 		solve();
 	}

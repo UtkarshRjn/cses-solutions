@@ -44,65 +44,61 @@ bool lexo_dec(string a, string b){
 	return a > b;
 }
 
-#define SZ 1000005
+#define SZ 200005
 const ll MOD = 1e9 + 7;
 
-ll powm(ll p, ll n){
+ll powm(ll p, ll a, ll mod){
 
-    ll ans = 1;
-    while(n){
-        ll r = n%2;
-        n/=2;
-        if(r) ans = ans * p % MOD;
-        p = p * p % MOD;
-    }
+	// use the binary exponentiation
+	ll ans = 1;
+	while(a){
+		ll r = a%2;
+		a/=2;
+		if(r) ans = (ans * p%mod)%mod;
+		p = (p%mod*p%mod)%mod;
+	}
 
-    return ans;
+	return ans%mod;
 
 }
 
-ll inv(ll n){
-    return powm(n,MOD-2);
-}
-
-ll spf[SZ]; 
-
-void Sieve(){
-
-    memset(spf, -1, sizeof(spf));
-    for(int i=2;i<SZ;i+=2) spf[i] = 2;
-
-    for(int i=3;i<SZ;i+=2){
-        if(spf[i] == -1){
-            for(int j=i;j<SZ;j+=i){
-                spf[j] = i;
-            }
-        }
-    }
-
+ll invmod(ll a, ll mod){
+	return powm(a,mod-2,mod)%mod;
 }
 
 void solve() {
 
-    ll n,m; cin >> n >> m;
+    ll n,k; cin >> n >> k;
+    
+    vector<ll> primes(k);
 
-    ll ans = 0;    
-    for(ll i=0;i<n;i++){
-        ans += powm(m,__gcd(i,n));
-        ans %= MOD;
+    for(auto &x : primes) cin >> x;
+
+    ll sum = 0;
+    for(int i=1;i<(1<<k);i++){
+        ll prod = n;
+        ll cnt = 0;
+        for(int j=0;j<k;j++){
+            if((i>>(j))&1) {
+                prod /= primes[j];
+                cnt++;
+            }
+        }
+
+        if(cnt%2 == 0){
+            sum -= prod;
+        }else{
+            sum += prod;
+        }
     }
 
-    ans = ans * inv(n) % MOD;
-
-    cout << ans << endl;
+    cout << sum << endl;
 
 }
 
 int main(){
-
 	int T;
     T = 1;
-    Sieve();
 	while(T--){
 		solve();
 	}

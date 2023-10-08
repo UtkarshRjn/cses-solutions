@@ -47,6 +47,8 @@ bool lexo_dec(string a, string b){
 #define SZ 1000005
 const ll MOD = 1e9 + 7;
 
+ll fact[SZ];
+
 ll powm(ll p, ll n){
 
     ll ans = 1;
@@ -65,36 +67,27 @@ ll inv(ll n){
     return powm(n,MOD-2);
 }
 
-ll spf[SZ]; 
+void Fact(){
 
-void Sieve(){
-
-    memset(spf, -1, sizeof(spf));
-    for(int i=2;i<SZ;i+=2) spf[i] = 2;
-
-    for(int i=3;i<SZ;i+=2){
-        if(spf[i] == -1){
-            for(int j=i;j<SZ;j+=i){
-                spf[j] = i;
-            }
-        }
+    ll ans = 1;
+    fact[0] = 1;
+    for(int i=1;i<=SZ;i++){
+        ans = ans * i % MOD;
+        fact[i] = ans;
     }
+
+}
+
+ll C(ll n, ll r){
+    
+    return fact[n] * inv(fact[r]) %MOD * inv(fact[n-r]) % MOD;
 
 }
 
 void solve() {
 
-    ll n,m; cin >> n >> m;
-
-    ll ans = 0;    
-    for(ll i=0;i<n;i++){
-        ans += powm(m,__gcd(i,n));
-        ans %= MOD;
-    }
-
-    ans = ans * inv(n) % MOD;
-
-    cout << ans << endl;
+    ll n,r; cin >> n >> r;
+    cout << C(n,r) << endl;
 
 }
 
@@ -102,7 +95,8 @@ int main(){
 
 	int T;
     T = 1;
-    Sieve();
+    Fact();
+    cin >> T;
 	while(T--){
 		solve();
 	}

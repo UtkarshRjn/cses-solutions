@@ -47,6 +47,8 @@ bool lexo_dec(string a, string b){
 #define SZ 1000005
 const ll MOD = 1e9 + 7;
 
+ll fact[SZ];
+
 ll powm(ll p, ll n){
 
     ll ans = 1;
@@ -65,36 +67,54 @@ ll inv(ll n){
     return powm(n,MOD-2);
 }
 
-ll spf[SZ]; 
+void Fact(){
 
-void Sieve(){
-
-    memset(spf, -1, sizeof(spf));
-    for(int i=2;i<SZ;i+=2) spf[i] = 2;
-
-    for(int i=3;i<SZ;i+=2){
-        if(spf[i] == -1){
-            for(int j=i;j<SZ;j+=i){
-                spf[j] = i;
-            }
-        }
+    ll ans = 1;
+    fact[0] = 1;
+    for(int i=1;i<=SZ;i++){
+        ans = ans * i % MOD;
+        fact[i] = ans;
     }
+
+}
+
+ll C(ll n, ll r){
+    
+    return fact[n] * inv(fact[r]) %MOD * inv(fact[n-r]) % MOD;
 
 }
 
 void solve() {
 
-    ll n,m; cin >> n >> m;
+    ll n; cin >> n;
+    string s; cin >> s;
 
-    ll ans = 0;    
-    for(ll i=0;i<n;i++){
-        ans += powm(m,__gcd(i,n));
-        ans %= MOD;
+    if(n%2 == 1){
+        cout << 0 << endl;
+        return;
     }
 
-    ans = ans * inv(n) % MOD;
+    if(s.size() > n){
+        cout << 0 << endl;
+        return;
+    }
 
-    cout << ans << endl;
+    ll open = 0, close = 0;
+    for(auto c: s){
+        if(c == '(') open++;
+        else close++;
+
+        if(close > open){
+            cout << 0 << endl;
+            return;
+        }
+    }
+
+    n /= 2;
+    ll k = open-close;
+    n = n - (close + k);
+
+    cout << C(2*n+k,n) * (k+1) % MOD * inv(n+k+1) % MOD << endl;
 
 }
 
@@ -102,7 +122,8 @@ int main(){
 
 	int T;
     T = 1;
-    Sieve();
+    Fact();
+    // cin >> T;
 	while(T--){
 		solve();
 	}

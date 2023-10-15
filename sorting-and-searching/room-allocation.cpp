@@ -1,46 +1,40 @@
-#include <iostream>
 #include <bits/stdc++.h>
 using namespace std;
 
-// Header files, namespaces,
-// macros as defined above
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-
-#define ordered_set tree<int, null_type,less<int>, rb_tree_tag,tree_order_statistics_node_update>
-
 typedef long long ll;
+typedef pair<ll,ll> pll;
+typedef pair<pll,ll> ppll;
 
 void solve() {
 
     ll n; cin >> n;
-    multiset<pair<ll,ll>> m;
-    vector<ll> ans;
+    multiset<pll> m;
+    vector<ll> ans(n);
     ll Max = LLONG_MIN;
 
-    vector<pair<ll,ll>> input;
-    for(int i=0;i<n;i++){
+    vector<ppll> input;
+    for(ll i=0;i<n;i++){
         ll x,y;cin >> x >> y;
-        input.push_back({x,y});
+        input.push_back(make_pair(make_pair(x,y),i));
     }
 
     sort(input.begin(),input.end());
 
-    m.insert({input[0].second,1});
-    ans.push_back(1);
+    m.insert(make_pair(input[0].first.second,1));
+    ans[input[0].second] = 1;
     for(ll i=1;i<n;i++){
-        ll x = input[i].first;
-        ll y = input[i].second;
+        ll x = input[i].first.first;
+        ll y = input[i].first.second;
+        ll idx = input[i].second;
         auto itr = *m.begin();
         if(x <= itr.first) {
-            m.insert({y, m.size() + 1});
-            ans.push_back(m.size());
+            m.insert(make_pair(y, (ll)m.size() + 1ll));
+            ans[idx] = m.size();
         }else{
             ll id = itr.second;
-            ans.push_back(id);
+            ans[idx] = id;
             m.erase(itr); // o(logn)
-            m.insert({y,id}); // o(logn)
+            m.insert(make_pair(y,id)); // o(logn)
         }
 
         Max = max(Max, (ll)m.size());
